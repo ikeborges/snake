@@ -7,7 +7,7 @@ class SnakeBodyPart {
     this.position = position
   }
 
-  getCoordinates() {
+  getPosition() {
     return this.position
   }
 
@@ -23,7 +23,7 @@ class SnakeBodyPart {
     const lastYPosition = MAX_HEIGHT_IN_BLOCKS - 1
     const lastXPosition = MAX_WIDTH_IN_BLOCKS - 1
 
-    // The Y axis in canvas is upside down
+    // The Y axis in canvas is upside down, so to go up we need to subtract from Y
     switch (this.direction) {
       case Directions.UP:
         if (this.position.yCoordinate === 0)

@@ -18,7 +18,7 @@ describe("SnakeBodyPart", () => {
   })
 
   it("Should have a position and a direction", () => {
-    const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+    const { xCoordinate, yCoordinate } = bodyPart.getPosition()
 
     expect(xCoordinate).toBe(startingCoordinates.xCoordinate)
     expect(yCoordinate).toBe(startingCoordinates.yCoordinate)
@@ -51,7 +51,7 @@ describe("SnakeBodyPart", () => {
       bodyPart.turnTo(Directions.LEFT)
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
       expect(xCoordinate).toBe(startingCoordinates.xCoordinate - 1)
       expect(yCoordinate).toBe(startingCoordinates.yCoordinate)
     })
@@ -60,7 +60,7 @@ describe("SnakeBodyPart", () => {
       bodyPart.turnTo(Directions.RIGHT)
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
       expect(xCoordinate).toBe(startingCoordinates.xCoordinate + 1)
       expect(yCoordinate).toBe(startingCoordinates.yCoordinate)
     })
@@ -69,7 +69,7 @@ describe("SnakeBodyPart", () => {
       bodyPart.turnTo(Directions.UP)
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
       expect(xCoordinate).toBe(startingCoordinates.xCoordinate)
       expect(yCoordinate).toBe(startingCoordinates.yCoordinate - 1)
     })
@@ -78,7 +78,7 @@ describe("SnakeBodyPart", () => {
       bodyPart.turnTo(Directions.DOWN)
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
       expect(xCoordinate).toBe(startingCoordinates.xCoordinate)
       expect(yCoordinate).toBe(startingCoordinates.yCoordinate + 1)
     })
@@ -93,7 +93,7 @@ describe("SnakeBodyPart", () => {
 
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
 
       expect(xCoordinate).toBe(0)
       expect(yCoordinate).toBe(29)
@@ -110,7 +110,7 @@ describe("SnakeBodyPart", () => {
 
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
 
       expect(xCoordinate).toBe(0)
       expect(yCoordinate).toBe(0)
@@ -127,7 +127,7 @@ describe("SnakeBodyPart", () => {
 
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
 
       expect(xCoordinate).toBe(maxWidthAndHeight.MAX_WIDTH_IN_BLOCKS - 1)
       expect(yCoordinate).toBe(0)
@@ -144,7 +144,7 @@ describe("SnakeBodyPart", () => {
 
       bodyPart.moveOneStep(maxWidthAndHeight)
 
-      const { xCoordinate, yCoordinate } = bodyPart.getCoordinates()
+      const { xCoordinate, yCoordinate } = bodyPart.getPosition()
 
       expect(xCoordinate).toBe(0)
       expect(yCoordinate).toBe(0)
