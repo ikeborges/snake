@@ -1,23 +1,15 @@
 class GameSettings {
-  static BLOCK_SIZE
-  static FRAME_WIDTH
-  static FRAME_HEIGHT
-
-  static get WIDTH_IN_BLOCKS() {
-    if (!this.FRAME_WIDTH || !this.BLOCK_SIZE)
-      throw Error(
-        "FRAME_WIDTH and BLOCK_SIZE settings must be set before getting WIDTH_IN_BLOCKS"
-      )
-    return this.FRAME_WIDTH / this.BLOCK_SIZE
-  }
-
-  static get HEIGHT_IN_BLOCKS() {
-    if (!this.FRAME_HEIGHT || !this.BLOCK_SIZE)
-      throw Error(
-        "FRAME_HEIGHT and BLOCK_SIZE settings must be set before getting HEIGHT_IN_BLOCKS"
-      )
-    return this.FRAME_HEIGHT / this.BLOCK_SIZE
+  constructor({ BLOCK_SIZE, FRAME_WIDTH, FRAME_HEIGHT }) {
+    this.BLOCK_SIZE = BLOCK_SIZE
+    this.FRAME_WIDTH = FRAME_WIDTH
+    this.FRAME_HEIGHT = FRAME_HEIGHT
+    this.WIDTH_IN_BLOCKS = FRAME_WIDTH / BLOCK_SIZE
+    this.HEIGHT_IN_BLOCKS = FRAME_HEIGHT / BLOCK_SIZE
   }
 }
 
-export default GameSettings
+export default new GameSettings({
+  BLOCK_SIZE: 20,
+  FRAME_WIDTH: 400,
+  FRAME_HEIGHT: 600,
+})

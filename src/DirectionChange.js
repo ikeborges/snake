@@ -1,5 +1,5 @@
 class DirectionChange {
-  constructor(direction, position) {
+  constructor({ direction, position }) {
     this.direction = direction
     this.position = position
   }

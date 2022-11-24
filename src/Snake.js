@@ -8,7 +8,17 @@ class Snake {
     this.bodyParts = []
     this.directionChanges = []
 
-    this.initializeBodyParts(length)
+    this._initializeBodyParts(length)
+  }
+
+  _initializeBodyParts(length) {
+    for (let i = 0; i < length; i++) {
+      const bodyPart = new SnakeBodyPart({
+        direction: Directions.UP,
+        position: new Position({ xCoordinate: 1, yCoordinate: i + 1 }),
+      })
+      this.bodyParts.push(bodyPart)
+    }
   }
 
   getLength() {
@@ -23,52 +33,52 @@ class Snake {
     return this.bodyParts[0].position
   }
 
-  eat = foodPosition => {
+  eat(foodPosition) {
     if (this.bodyParts[0].position.equals(foodPosition)) {
       const currentTail = this.bodyParts[this.bodyParts.length - 1]
       let newTail
 
       switch (currentTail.direction) {
         case Directions.UP:
-          newTail = new SnakeBodyPart(
-            currentTail.direction,
-            new Position(
-              currentTail.position.xCoordinate,
-              currentTail.position.yCoordinate + 1
-            )
-          )
+          newTail = new SnakeBodyPart({
+            direction: currentTail.direction,
+            position: new Position({
+              xCoordinate: currentTail.position.xCoordinate,
+              yCoordinate: currentTail.position.yCoordinate + 1,
+            }),
+          })
 
           break
         case Directions.DOWN:
-          newTail = new SnakeBodyPart(
-            currentTail.direction,
-            new Position(
-              currentTail.position.xCoordinate,
-              currentTail.position.yCoordinate - 1
-            )
-          )
+          newTail = new SnakeBodyPart({
+            direction: currentTail.direction,
+            position: new Position({
+              xCoordinate: currentTail.position.xCoordinate,
+              yCoordinate: currentTail.position.yCoordinate - 1,
+            }),
+          })
 
           break
 
         case Directions.LEFT:
-          newTail = new SnakeBodyPart(
-            currentTail.direction,
-            new Position(
-              currentTail.position.xCoordinate - 1,
-              currentTail.position.yCoordinate
-            )
-          )
+          newTail = new SnakeBodyPart({
+            direction: currentTail.direction,
+            position: new Position({
+              xCoordinate: currentTail.position.xCoordinate - 1,
+              yCoordinate: currentTail.position.yCoordinate,
+            }),
+          })
 
           break
 
         case Directions.RIGHT:
-          newTail = new SnakeBodyPart(
-            currentTail.direction,
-            new Position(
-              currentTail.position.xCoordinate + 1,
-              currentTail.position.yCoordinate
-            )
-          )
+          newTail = new SnakeBodyPart({
+            direction: currentTail.direction,
+            position: new Position({
+              xCoordinate: currentTail.position.xCoordinate + 1,
+              yCoordinate: currentTail.position.yCoordinate,
+            }),
+          })
 
           break
       }
@@ -80,14 +90,7 @@ class Snake {
     return false
   }
 
-  initializeBodyParts(length) {
-    for (let i = 0; i < length; i++) {
-      const bodyPart = new SnakeBodyPart(Directions.UP, new Position(1, i + 1))
-      this.bodyParts.push(bodyPart)
-    }
-  }
-
-  turnSnakeTo = targetDirection => {
+  turnSnakeTo(targetDirection) {
     const snakeHead = this.bodyParts[0]
 
     if (
@@ -96,47 +99,17 @@ class Snake {
     )
       return
 
-    let newDirectionChange
-
-    // TODO: Make sure position is always recreated and not referenced
-    const snakeHeadPosition = new Position(
-      snakeHead.position.xCoordinate,
-      snakeHead.position.yCoordinate
-    )
-
-    switch (targetDirection) {
-      case Directions.UP:
-        newDirectionChange = new DirectionChange(
-          Directions.UP,
-          snakeHeadPosition
-        )
-        break
-      case Directions.DOWN:
-        newDirectionChange = new DirectionChange(
-          Directions.DOWN,
-          snakeHeadPosition
-        )
-        break
-      case Directions.RIGHT:
-        newDirectionChange = new DirectionChange(
-          Directions.RIGHT,
-          snakeHeadPosition
-        )
-        break
-      case Directions.LEFT:
-        newDirectionChange = new DirectionChange(
-          Directions.LEFT,
-          snakeHeadPosition
-        )
-        break
-      default:
-        throw new Error("Can't turn snake to invalid direction")
-    }
+    // Make sure position is always recreated and not referenced
+    const snakeHeadPosition = new Position({ ...snakeHead.position })
+    const newDirectionChange = new DirectionChange({
+      direction: targetDirection,
+      position: snakeHeadPosition,
+    })
 
     this.directionChanges.push(newDirectionChange)
   }
 
-  moveOneStep = foodPosition => {
+  moveOneStep(foodPosition) {
     // The direction change item that the body is gonna go through is
     // always the first on the list
     let removeFirstDirectionChange = false

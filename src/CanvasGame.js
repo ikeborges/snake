@@ -14,7 +14,8 @@ class CanvasGame {
 
     this.addKeyboardListeners()
 
-    this.drawFrame()
+    this.previousTimestamp = 0
+    this.tick()
   }
 
   addKeyboardListeners() {
@@ -30,7 +31,7 @@ class CanvasGame {
 
       // TODO: Remove this – only for testing purposes
       if (event.key === " ") {
-        this.runGameLoop()
+        this.tick()
         return
       }
 
@@ -70,7 +71,11 @@ class CanvasGame {
     this.drawSnake(snake)
   }
 
-  runGameLoop = () => {
+  tick = timestamp => {
+    // const elapsedTime = timestamp - this.previousTimestamp
+
+    // if (!this.previousTimestamp || elapsedTime >= 200) {
+    // this.previousTimestamp = timestamp
     const { FRAME_WIDTH, FRAME_HEIGHT } = GameSettings
 
     const moveResult = this.game.snake.moveOneStep(this.game.food.position)
@@ -89,9 +94,17 @@ class CanvasGame {
 
     this.ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT)
     this.drawFrame()
+    // }
 
-    // this.window.requestAnimationFrame(this.runGameLoop)
+    // this.window.requestAnimationFrame(this.tick)
   }
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const canvas = document.getElementById("canvas")
+  const context = canvas.getContext("2d")
+
+  new CanvasGame(window, document, context)
+})
 
 export default CanvasGame

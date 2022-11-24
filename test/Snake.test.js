@@ -1,4 +1,5 @@
 import Directions from "../src/Directions"
+import Food from "../src/Food"
 import Snake from "../src/Snake"
 
 describe("Snake", () => {
@@ -14,19 +15,24 @@ describe("Snake", () => {
     })
   })
 
-  // it("Should move correctly", () => {
-  //   const snake = new Snake()
-  //   const startPositions = snake.getPositions()
-  //   const expectedEndPositions = startPositions.map(position => {
-  //     return { ...position, yCoordinate: position.yCoordinate - 1 }
-  //   })
+  it("Should increase length after eating", () => {
+    const snake = new Snake(3)
+    const food = new Food({ ...snake.getHeadPosition() })
 
-  //   snake.turnSnakeTo(Directions.UP)
+    snake.eat(food.position)
+    expect(snake.getLength()).toBe(4)
+  })
 
-  //   snake.moveOneStep()
+  it("Should eat the food and head are in the same position", () => {
+    const snake = new Snake(3)
+    const food = new Food({
+      xCoordinate: snake.getHeadPosition().xCoordinate,
+      yCoordinate: snake.getHeadPosition().yCoordinate - 1,
+    })
 
-  //   const endPositions = snake.getPositions()
+    snake.turnSnakeTo(Directions.UP)
+    snake.moveOneStep(food.position)
 
-  //   expect(endPositions).toStrictEqual(expectedEndPositions)
-  // })
+    expect(snake.getLength()).toBe(4)
+  })
 })

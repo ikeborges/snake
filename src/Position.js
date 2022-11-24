@@ -1,14 +1,18 @@
+import GameSettings from "./GameSettings.js"
+
 class Position {
   constructor({ xCoordinate, yCoordinate }) {
     this.xCoordinate = xCoordinate
     this.yCoordinate = yCoordinate
   }
 
-  static generateRandomPosition(widthBlocks, heightBlocks) {
-    const xCoordinate = Math.floor(Math.random() * widthBlocks)
-    const yCoordinate = Math.floor(Math.random() * heightBlocks)
+  static generateRandomPosition() {
+    const xCoordinate = Math.floor(Math.random() * GameSettings.WIDTH_IN_BLOCKS)
+    const yCoordinate = Math.floor(
+      Math.random() * GameSettings.HEIGHT_IN_BLOCKS
+    )
 
-    return { xCoordinate, yCoordinate }
+    return new Position({ xCoordinate, yCoordinate })
   }
 
   equals = otherPosition => {

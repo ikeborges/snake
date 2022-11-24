@@ -1,5 +1,5 @@
-import { runInThisContext } from "vm"
 import Directions from "./Directions.js"
+import GameSettings from "./GameSettings.js"
 
 class SnakeBodyPart {
   constructor({ direction, position }) {
@@ -19,9 +19,9 @@ class SnakeBodyPart {
     this.direction = direction
   }
 
-  moveOneStep({ MAX_WIDTH_IN_BLOCKS, MAX_HEIGHT_IN_BLOCKS }) {
-    const lastYPosition = MAX_HEIGHT_IN_BLOCKS - 1
-    const lastXPosition = MAX_WIDTH_IN_BLOCKS - 1
+  moveOneStep() {
+    const lastYPosition = GameSettings.HEIGHT_IN_BLOCKS - 1
+    const lastXPosition = GameSettings.WIDTH_IN_BLOCKS - 1
 
     // The Y axis in canvas is upside down, so to go up we need to subtract from Y
     switch (this.direction) {
