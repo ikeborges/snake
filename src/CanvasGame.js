@@ -1,5 +1,4 @@
 import Directions from "./Directions.js"
-import Food from "./Food.js"
 import Game from "./Game.js"
 import GameSettings from "./GameSettings.js"
 
@@ -27,8 +26,6 @@ class CanvasGame {
     ])
 
     this.document.addEventListener("keydown", event => {
-      const { snake } = this.game
-
       // TODO: Remove this – only for testing purposes
       if (event.key === " ") {
         this.tick()
@@ -36,7 +33,7 @@ class CanvasGame {
       }
 
       if (keysToDirection.has(event.key)) {
-        snake.turnSnakeTo(keysToDirection.get(event.key))
+        this.game.turnSnakeTo(keysToDirection.get(event.key))
       }
     })
   }
@@ -72,31 +69,24 @@ class CanvasGame {
   }
 
   tick = timestamp => {
-    // const elapsedTime = timestamp - this.previousTimestamp
+    const elapsedTime = timestamp - this.previousTimestamp
 
-    // if (!this.previousTimestamp || elapsedTime >= 200) {
-    // this.previousTimestamp = timestamp
-    const { FRAME_WIDTH, FRAME_HEIGHT } = GameSettings
+    if (!this.previousTimestamp || elapsedTime >= 200) {
+      this.previousTimestamp = timestamp
 
-    const moveResult = this.game.snake.moveOneStep(this.game.food.position)
+      const updateResult = this.game.updateState()
 
-    switch (moveResult) {
-      case -1:
-        alert("Game Over")
-        break
-      case 0:
-        // All good here, good to go
-        break
-      case 1:
-        this.game.food = new Food()
-        break
+      if (!updateResult) {
+        alert("Game over! Refresh the page to start again.")
+        return
+      }
+
+      const { FRAME_WIDTH, FRAME_HEIGHT } = GameSettings
+      this.ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT)
+      this.drawFrame()
     }
 
-    this.ctx.clearRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT)
-    this.drawFrame()
-    // }
-
-    // this.window.requestAnimationFrame(this.tick)
+    this.window.requestAnimationFrame(this.tick)
   }
 }
 

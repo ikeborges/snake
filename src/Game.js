@@ -8,8 +8,21 @@ class Game {
     this.snake = new Snake()
   }
 
+  turnSnakeTo(direction) {
+    this.snake.turnSnakeTo(direction)
+  }
+
   updateState() {
-    console.log("TODO: Update game state")
+    if (this.snake.isThereHeadCollision()) return false
+
+    if (this.snake.shouldEatFood(this.food.position)) {
+      this.snake.eat(this.food.position)
+      this.food = new Food()
+    }
+
+    this.snake.moveOneStep()
+
+    return true
   }
 }
 

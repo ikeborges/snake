@@ -33,61 +33,60 @@ class Snake {
     return this.bodyParts[0].position
   }
 
-  eat(foodPosition) {
-    if (this.bodyParts[0].position.equals(foodPosition)) {
-      const currentTail = this.bodyParts[this.bodyParts.length - 1]
-      let newTail
+  shouldEatFood(foodPosition) {
+    return this.bodyParts[0].position.equals(foodPosition)
+  }
 
-      switch (currentTail.direction) {
-        case Directions.UP:
-          newTail = new SnakeBodyPart({
-            direction: currentTail.direction,
-            position: new Position({
-              xCoordinate: currentTail.position.xCoordinate,
-              yCoordinate: currentTail.position.yCoordinate + 1,
-            }),
-          })
+  eat() {
+    const currentTail = this.bodyParts[this.bodyParts.length - 1]
+    let newTail
 
-          break
-        case Directions.DOWN:
-          newTail = new SnakeBodyPart({
-            direction: currentTail.direction,
-            position: new Position({
-              xCoordinate: currentTail.position.xCoordinate,
-              yCoordinate: currentTail.position.yCoordinate - 1,
-            }),
-          })
+    switch (currentTail.direction) {
+      case Directions.UP:
+        newTail = new SnakeBodyPart({
+          direction: currentTail.direction,
+          position: new Position({
+            xCoordinate: currentTail.position.xCoordinate,
+            yCoordinate: currentTail.position.yCoordinate + 1,
+          }),
+        })
 
-          break
+        break
+      case Directions.DOWN:
+        newTail = new SnakeBodyPart({
+          direction: currentTail.direction,
+          position: new Position({
+            xCoordinate: currentTail.position.xCoordinate,
+            yCoordinate: currentTail.position.yCoordinate - 1,
+          }),
+        })
 
-        case Directions.LEFT:
-          newTail = new SnakeBodyPart({
-            direction: currentTail.direction,
-            position: new Position({
-              xCoordinate: currentTail.position.xCoordinate - 1,
-              yCoordinate: currentTail.position.yCoordinate,
-            }),
-          })
+        break
 
-          break
+      case Directions.LEFT:
+        newTail = new SnakeBodyPart({
+          direction: currentTail.direction,
+          position: new Position({
+            xCoordinate: currentTail.position.xCoordinate + 1,
+            yCoordinate: currentTail.position.yCoordinate,
+          }),
+        })
 
-        case Directions.RIGHT:
-          newTail = new SnakeBodyPart({
-            direction: currentTail.direction,
-            position: new Position({
-              xCoordinate: currentTail.position.xCoordinate + 1,
-              yCoordinate: currentTail.position.yCoordinate,
-            }),
-          })
+        break
 
-          break
-      }
+      case Directions.RIGHT:
+        newTail = new SnakeBodyPart({
+          direction: currentTail.direction,
+          position: new Position({
+            xCoordinate: currentTail.position.xCoordinate - 1,
+            yCoordinate: currentTail.position.yCoordinate,
+          }),
+        })
 
-      this.bodyParts.push(newTail)
-      return true
+        break
     }
 
-    return false
+    this.bodyParts.push(newTail)
   }
 
   turnSnakeTo(targetDirection) {
@@ -109,7 +108,17 @@ class Snake {
     this.directionChanges.push(newDirectionChange)
   }
 
-  moveOneStep(foodPosition) {
+  isThereHeadCollision() {
+    for (const [index, bodyPart] of Object.entries(this.bodyParts)) {
+      if (index > 0 && this.bodyParts[0].position.equals(bodyPart.position)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  moveOneStep() {
     // The direction change item that the body is gonna go through is
     // always the first on the list
     let removeFirstDirectionChange = false
@@ -131,17 +140,7 @@ class Snake {
       this.directionChanges = this.directionChanges.slice(1)
     }
 
-    for (const [index, bodyPart] of Object.entries(this.bodyParts)) {
-      if (index > 0 && this.bodyParts[0].position.equals(bodyPart.position)) {
-        this.bodyParts = []
-        return -1
-      } else {
-        bodyPart.moveOneStep()
-      }
-    }
-    const hasEaten = this.eat(foodPosition)
-
-    return hasEaten ? 1 : 0
+    this.bodyParts.forEach(bodyPart => bodyPart.moveOneStep())
   }
 }
 

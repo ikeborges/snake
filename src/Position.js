@@ -15,10 +15,10 @@ class Position {
     return new Position({ xCoordinate, yCoordinate })
   }
 
-  equals = otherPosition => {
+  equals = position => {
     return (
-      this.xCoordinate === otherPosition.xCoordinate &&
-      this.yCoordinate === otherPosition.yCoordinate
+      this.xCoordinate === position.xCoordinate &&
+      this.yCoordinate === position.yCoordinate
     )
   }
 }
