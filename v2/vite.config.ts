@@ -5,4 +5,8 @@ export default defineConfig({
   server: {
     port: 5000,
   },
+  test: {
+    root: "./",
+    globals: false,
+  },
 });
