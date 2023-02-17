@@ -5,6 +5,11 @@
   font-family: monospace;
 }
 
+:root {
+  --button-font-size: 1.75rem;
+  --button-vertical-padding: 1.5rem;
+}
+
 html,
 body {
   height: 100%;
@@ -17,10 +22,6 @@ body {
   background-color: black;
 }
 
-.title {
-  font-size: 10rem;
-}
-
 .wrapper {
   height: 100%;
   display: flex;
@@ -31,47 +32,24 @@ body {
   margin: 0 auto;
 }
 
-.figure {
-  display: flex;
-  margin-bottom: 5rem;
+input {
+  font-size: var(--button-font-size);
+  padding: var(--button-vertical-padding) 1.25rem;
 }
 
-.snake {
-  display: flex;
-  gap: 5px;
-}
-
-.food,
-.space,
-.snake div {
-  display: inline-block;
-  background-color: white;
-  width: 3rem;
-  height: 3rem;
-}
-
-.space {
-  background-color: transparent;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  font-size: 2rem;
-  width: 100%;
-}
-
-.buttons a {
-  text-decoration: none;
+button,
+a {
+  text-decoration: underline;
   background-color: transparent;
   color: white;
   border: 2px solid white;
-  font-size: 1.75rem;
-  padding: 1.5rem 2.5rem;
+  font-size: var(--button-font-size);
+  padding: var(--button-vertical-padding) 2.5rem;
   cursor: pointer;
 }
 
-.buttons a:hover {
+button:hover,
+a:hover {
   color: black;
   background-color: white;
 }
