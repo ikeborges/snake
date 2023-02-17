@@ -1,13 +1,18 @@
-import { describe, it, assert, beforeAll } from "vitest";
-import Direction from "./Direction";
-import Snake from "./Snake";
+import { describe, it, assert, beforeEach } from "vitest";
+import Direction, { oppositeDirection } from "./Direction";
+import Snake, { InitialSnakeState } from "./Snake";
 
 describe("Snake", () => {
-  describe("initial state", () => {
-    let snake: Snake;
+  let snake: Snake;
 
-    beforeAll(() => {
-      snake = new Snake();
+  describe("initial state", () => {
+    const intialSnakePosition: InitialSnakeState = {
+      size: 3,
+      direction: Direction.UP,
+    };
+
+    beforeEach(() => {
+      snake = new Snake(intialSnakePosition);
     });
 
     it("should have size 3", () => {
@@ -22,6 +27,24 @@ describe("Snake", () => {
       const actual = snake.direction;
 
       assert.strictEqual(expected, actual);
+    });
+  });
+
+  describe("direction", () => {
+    it("should not change to an opposite direction", () => {
+      const directions = [
+        Direction.UP,
+        Direction.DOWN,
+        Direction.LEFT,
+        Direction.RIGHT,
+      ];
+
+      directions.forEach(direction => {
+        snake = new Snake({ size: 21, direction });
+        const opposite = oppositeDirection(direction);
+        const updatedDirection = snake.turnTo(opposite);
+        assert.strictEqual(updatedDirection, direction);
+      });
     });
   });
 });
