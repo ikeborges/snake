@@ -1,1 +1,61 @@
 @import url("./common.css");
+
+header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+  font-size: var(--button-font-size);
+}
+
+canvas {
+  border: 1px solid white;
+  height: 600px;
+  width: 400px;
+  margin: auto;
+}
+
+.game-over,
+.game-start {
+  display: none;
+}
+
+.game-over.active,
+.game-start.active {
+  display: block;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+}
+
+.game-stats {
+  min-width: 400px;
+  padding: 2rem;
+  font-size: var(--button-font-size);
+  line-height: 1.5;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+}
+
+.player-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-data label {
+  margin-top: 1rem;
+}
+
+.player-data input {
+  margin: 1rem 0;
+}
+
+.player-data button {
+  width: 100%;
+}
