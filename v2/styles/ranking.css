@@ -1,5 +1,11 @@
 @import url("./common.css");
 
+.back {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+}
+
 h1 {
   font-size: 6rem;
   margin-bottom: 1rem;
