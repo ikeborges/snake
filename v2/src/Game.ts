@@ -10,10 +10,11 @@ class Game {
   }
 
   updateState(): boolean {
-    if (this.snake.isThereHeadCollision()) return false;
+    if (this.snake.collisionHappened()) return false;
 
     if (this.snake.shouldEatFood(this.food.position)) {
       this.snake.eat();
+      this.score += 1;
       this.food = new Food();
     }
 

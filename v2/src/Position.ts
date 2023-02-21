@@ -14,6 +14,10 @@ class Position {
     return new Position(xCoordinate, yCoordinate);
   }
 
+  static from(position: Position) {
+    return new Position(position.x, position.y);
+  }
+
   equals(position: Position): boolean {
     return this.x === position.x && this.y === position.y;
   }

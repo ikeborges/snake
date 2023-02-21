@@ -3,7 +3,7 @@ import GameSettings from "./GameSettings";
 import Position from "./Position";
 
 class SnakeBodyPart {
-  constructor(public position: Position, public direction: Direction) {}
+  constructor(private position: Position, private direction: Direction) {}
 
   getPosition() {
     return this.position;
@@ -13,7 +13,7 @@ class SnakeBodyPart {
     return this.direction;
   }
 
-  turnTo(direction) {
+  turnTo(direction: Direction) {
     this.direction = direction;
   }
 

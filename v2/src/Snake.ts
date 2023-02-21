@@ -2,23 +2,73 @@ import DirectionChange from "./DirectionChange";
 import Direction, { oppositeDirection } from "./Direction";
 import Position from "./Position";
 import SnakeBodyPart from "./SnakeBodyPart";
+import Queue from "../util/Queue";
 
 class Snake {
-  public body: SnakeBodyPart[] = [];
-  private directionChanges: DirectionChange[] = [];
+  private body: SnakeBodyPart[] = [];
+  private directionChanges: Queue<DirectionChange> = new Queue();
 
   constructor(length = 3) {
-    this._initializeBodyParts(length);
+    this.populateBody(length);
   }
 
-  _initializeBodyParts(length: number) {
+  populateBody(length: number) {
     for (let i = 0; i < length; i++) {
       const bodyPart = new SnakeBodyPart(new Position(1, i + 1), Direction.UP);
       this.body.push(bodyPart);
     }
   }
 
-  get tail() {
+  appendBodyPart() {
+    const currentTail = this.getTail();
+
+    let newPosition;
+
+    switch (currentTail.getDirection()) {
+      case Direction.UP:
+        newPosition = new Position(
+          currentTail.getPosition().x,
+          currentTail.getPosition().y + 1
+        );
+
+        break;
+      case Direction.DOWN:
+        newPosition = new Position(
+          currentTail.getPosition().x,
+          currentTail.getPosition().y - 1
+        );
+
+        break;
+
+      case Direction.LEFT:
+        newPosition = new Position(
+          currentTail.getPosition().x + 1,
+          currentTail.getPosition().y
+        );
+
+        break;
+
+      case Direction.RIGHT:
+        newPosition = new Position(
+          currentTail.getPosition().x - 1,
+          currentTail.getPosition().y
+        );
+
+        break;
+    }
+
+    this.body.push(new SnakeBodyPart(newPosition, currentTail.getDirection()));
+  }
+
+  getBody() {
+    return this.body;
+  }
+
+  getHead() {
+    return this.body[0];
+  }
+
+  getTail() {
     return (
       this.body.at(-1) || new SnakeBodyPart(new Position(0, 0), Direction.UP)
     );
@@ -29,112 +79,66 @@ class Snake {
   }
 
   getPositions() {
-    return this.body.map(bodyPart => bodyPart.position);
-  }
-
-  getHeadPosition() {
-    return this.body[0].position;
+    return this.body.map(bodyPart => bodyPart.getPosition());
   }
 
   shouldEatFood(foodPosition: Position) {
-    return this.body[0].position.equals(foodPosition);
+    return this.getHead().getPosition().equals(foodPosition);
   }
 
   eat() {
-    const currentTail = this.body[this.body.length - 1];
-    let newTail;
-
-    switch (currentTail.direction) {
-      case Direction.UP:
-        newTail = new SnakeBodyPart(
-          new Position(currentTail.position.x, currentTail.position.y + 1),
-          currentTail.direction
-        );
-
-        break;
-      case Direction.DOWN:
-        newTail = new SnakeBodyPart(
-          new Position(currentTail.position.x, currentTail.position.y - 1),
-          currentTail.direction
-        );
-
-        break;
-
-      case Direction.LEFT:
-        newTail = new SnakeBodyPart(
-          new Position(currentTail.position.x + 1, currentTail.position.y),
-          currentTail.direction
-        );
-
-        break;
-
-      case Direction.RIGHT:
-        newTail = new SnakeBodyPart(
-          new Position(currentTail.position.x - 1, currentTail.position.y),
-          currentTail.direction
-        );
-
-        break;
-    }
-
-    this.body.push(newTail);
+    this.appendBodyPart();
   }
 
   turnSnakeTo(targetDirection: Direction) {
-    const snakeHead = this.body[0];
+    const snakeHead = this.getHead();
 
     if (
-      targetDirection === snakeHead.direction ||
-      targetDirection === oppositeDirection(snakeHead.direction)
+      targetDirection === snakeHead.getDirection() ||
+      targetDirection === oppositeDirection(snakeHead.getDirection())
     )
       return;
 
     // Make sure position is always recreated and not referenced
-    const snakeHeadPosition = new Position(
-      snakeHead.position.x,
-      snakeHead.position.y
-    );
+    const snakeHeadPosition = Position.from(snakeHead.getPosition());
     const newDirectionChange = new DirectionChange(
       targetDirection,
       snakeHeadPosition
     );
 
-    this.directionChanges.push(newDirectionChange);
+    this.directionChanges.enqueue(newDirectionChange);
   }
 
-  isThereHeadCollision() {
+  collisionHappened() {
     for (const [index, bodyPart] of Object.entries(this.body)) {
       if (
         parseInt(index) > 0 &&
-        this.body[0].position.equals(bodyPart.position)
-      ) {
+        this.getHead().getPosition().equals(bodyPart.getPosition())
+      )
         return true;
-      }
     }
 
     return false;
   }
 
   moveOneStep() {
-    // The direction change item that the body is gonna go through is
-    // always the first on the list
-    let removeFirstDirectionChange = false;
+    let shouldDequeue = false;
 
-    // Turn body part direction if its in a directionChange position
-    this.directionChanges.forEach(directionChange => {
-      for (let i = 0; i < this.body.length; i++) {
-        if (directionChange.position.equals(this.body[i].position)) {
-          this.body[i].direction = directionChange.direction;
+    // Turn bodyPart's direction if it's in a directionChange position
+    this.directionChanges.asArray().forEach(directionChange => {
+      this.body.forEach((bodyPart, index, body) => {
+        if (directionChange.getPosition().equals(bodyPart.getPosition())) {
+          bodyPart.turnTo(directionChange.getDirection());
 
-          if (i === this.body.length - 1) {
-            removeFirstDirectionChange = true;
+          if (index === body.length - 1) {
+            shouldDequeue = true;
           }
         }
-      }
+      });
     });
 
-    if (removeFirstDirectionChange) {
-      this.directionChanges = this.directionChanges.slice(1);
+    if (shouldDequeue) {
+      this.directionChanges.dequeue();
     }
 
     this.body.forEach(bodyPart => bodyPart.moveOneStep());

@@ -11,17 +11,20 @@ describe("Snake", () => {
       snake.eat();
       snake.eat();
 
-      assert.strictEqual(snake.body.length, 4);
+      assert.strictEqual(snake.getBody().length, 4);
     });
 
     it("should have new body part with the same direction as the previous tail", () => {
       snake = new Snake(3);
 
-      const tailBeforeEating = snake.tail;
+      const tailBeforeEating = snake.getTail();
       snake.eat();
-      const tailAfterEating = snake.tail;
+      const tailAfterEating = snake.getTail();
 
-      assert.strictEqual(tailAfterEating.direction, tailBeforeEating.direction);
+      assert.strictEqual(
+        tailAfterEating.getDirection(),
+        tailBeforeEating.getDirection()
+      );
     });
   });
 });
