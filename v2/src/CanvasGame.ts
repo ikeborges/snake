@@ -14,11 +14,8 @@ class CanvasGame {
     public context: CanvasRenderingContext2D
   ) {
     this.context.fillStyle = "white";
-
     this.game = new Game(0, new Food(), new Snake());
-
     this.addKeyboardListeners();
-
     this.tick(0);
   }
 
@@ -54,10 +51,10 @@ class CanvasGame {
   }
 
   drawSnake(snake: Snake) {
-    for (const bodyPart of snake.body) {
-      const { x, y } = bodyPart.position;
+    snake.getBody().forEach(bodyPart => {
+      const { x, y } = bodyPart.getPosition();
       this.drawBlock(x, y);
-    }
+    });
   }
 
   drawFrame() {
