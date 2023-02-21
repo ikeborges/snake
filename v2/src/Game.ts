@@ -1,18 +1,25 @@
-import Position from "./Position";
+import Direction from "./Direction";
+import Food from "./Food";
+import Snake from "./Snake";
 
 class Game {
-  private _foodPosition: Position;
+  constructor(public score = 0, public food: Food, public snake: Snake) {}
 
-  constructor(initialFoodPosition: Position) {
-    this._foodPosition = initialFoodPosition;
+  turnSnakeTo(direction: Direction) {
+    this.snake.turnSnakeTo(direction);
   }
 
-  placeFoodAt(position: Position) {
-    this._foodPosition = position;
-  }
+  updateState(): boolean {
+    if (this.snake.isThereHeadCollision()) return false;
 
-  get foodPosition(): Position {
-    return this._foodPosition;
+    if (this.snake.shouldEatFood(this.food.position)) {
+      this.snake.eat();
+      this.food = new Food();
+    }
+
+    this.snake.moveOneStep();
+
+    return true;
   }
 }
 
