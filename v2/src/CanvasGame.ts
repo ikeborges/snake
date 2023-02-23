@@ -1,11 +1,13 @@
 import Directions from "./Direction";
 import Game, { GameStatus } from "./Game";
+import { GameAPIClient } from "./GameAPIClient";
 import GameSettings from "./GameSettings";
 import Position from "./Position";
 
 class CanvasGame {
   private game: Game;
   private previousTimestamp: number = 0;
+  private playerName: string = "John Doe";
 
   constructor(
     public window: Window,
@@ -17,7 +19,29 @@ class CanvasGame {
     this.addKeyboardListeners();
   }
 
+  retrievePlayername() {}
+
   start() {
+    const newGameScreen = this.document.getElementById(
+      "game-start"
+    ) as HTMLElement;
+
+    newGameScreen.className = "active";
+
+    const playerDataForm = this.document.getElementById(
+      "player-data"
+    ) as HTMLElement;
+    const playerNameInput = this.document.getElementById(
+      "player-name"
+    ) as HTMLInputElement;
+
+    playerDataForm.addEventListener("submit", ev => {
+      ev.preventDefault();
+
+      this.playerName = playerNameInput.value;
+      newGameScreen.className = "";
+    });
+
     this.gameLoop();
   }
 
@@ -65,12 +89,51 @@ class CanvasGame {
     this.drawSnake(snakePositions);
   }
 
-  updateView(gameStatus: GameStatus) {
-    // Update game status
+  private formatElapsedTime(time: Date): string {
+    const getPaddedValue = (number: number) => {
+      return number < 10 ? "0" + number.toString() : number;
+    };
+
+    const hours = getPaddedValue(time.getUTCHours());
+    const minutes = getPaddedValue(time.getUTCMinutes());
+    const seconds = getPaddedValue(time.getUTCSeconds());
+
+    return `${hours}:${minutes}:${seconds}`;
   }
 
-  gameOver(): void {
-    // Show game ended screen
+  updateView(gameStatus: GameStatus) {
+    const gameScoreElement = document.getElementById(
+      "score"
+    ) as HTMLSpanElement;
+    gameScoreElement.innerText = gameStatus.score.toString();
+
+    const gameTimeElement = document.getElementById("time") as HTMLSpanElement;
+    const elapsedTime = new Date(Date.now() - gameStatus.startTime);
+    gameTimeElement.innerText = this.formatElapsedTime(elapsedTime);
+  }
+
+  gameOver(gameStatus: GameStatus): void {
+    const gameOverScreen = this.document.getElementById(
+      "game-over"
+    ) as HTMLElement;
+    gameOverScreen.className = "active";
+
+    const finalScoreElement = document.getElementById(
+      "final-score"
+    ) as HTMLSpanElement;
+    finalScoreElement.innerText = gameStatus.score.toString();
+
+    const elapsedTimeElement = document.getElementById(
+      "time-elapsed"
+    ) as HTMLSpanElement;
+    const elapsedTime = new Date(Date.now() - gameStatus.startTime);
+    elapsedTimeElement.innerText = this.formatElapsedTime(elapsedTime);
+
+    const rankingPositionElement = document.getElementById(
+      "ranking-position"
+    ) as HTMLSpanElement;
+    rankingPositionElement.innerText =
+      GameAPIClient.getRankingPosition().toString();
   }
 
   gameLoop = (timestamp: number = 0) => {
@@ -82,7 +145,7 @@ class CanvasGame {
       const gameStatus = this.game.runCycle();
 
       if (gameStatus.gameEnded) {
-        return this.gameOver();
+        return this.gameOver(gameStatus);
       }
 
       this.updateView(gameStatus);

@@ -18,24 +18,26 @@
       </div>
     </div>
 
-    <div class="game-start">
+    <div id="game-start">
       <div class="wrapper">
         <h1>Welcome!</h1>
-        <div class="player-data">
+        <form id="player-data">
           <label for="player-name">What's your name?</label>
-          <input id="player-name" />
-          <button id="start-game">Start game</button>
-        </div>
+          <input id="player-name" required />
+          <button type="submit" id="start-game">Start game</button>
+        </form>
       </div>
     </div>
 
-    <div class="game-over">
+    <div id="game-over">
       <div class="wrapper">
         <h1>Game Over!</h1>
         <div class="game-stats">
-          <div class="stat"><span>Final score:</span><span>1020</span></div>
           <div class="stat">
-            <span>Time elapsed:</span><span>03:21:02</span>
+            <span>Final score:</span><span id="final-score">1020</span>
+          </div>
+          <div class="stat">
+            <span>Time elapsed:</span><span id="time-elapsed">03:21:02</span>
           </div>
           <div class="stat">
             <span>Ranking position:</span

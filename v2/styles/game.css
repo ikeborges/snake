@@ -15,13 +15,13 @@ canvas {
   margin: auto;
 }
 
-.game-over,
-.game-start {
+#game-over,
+#game-start {
   display: none;
 }
 
-.game-over.active,
-.game-start.active {
+#game-over.active,
+#game-start.active {
   display: block;
   position: absolute;
   top: 0;
@@ -42,20 +42,20 @@ canvas {
   justify-content: space-between;
 }
 
-.player-data {
+#player-data {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.player-data label {
+#player-data label {
   margin-top: 1rem;
 }
 
-.player-data input {
+#player-data input {
   margin: 1rem 0;
 }
 
-.player-data button {
+#player-data button {
   width: 100%;
 }
