@@ -1,5 +1,5 @@
 import { describe, it, assert } from "vitest";
-import Snake from "./Snake";
+import Snake from "../src/Snake";
 
 describe("Snake", () => {
   let snake: Snake;

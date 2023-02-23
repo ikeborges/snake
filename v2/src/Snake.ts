@@ -82,7 +82,7 @@ class Snake {
     return this.body.map(bodyPart => bodyPart.getPosition());
   }
 
-  shouldEatFood(foodPosition: Position) {
+  shouldEatFood(foodPosition: Position): boolean {
     return this.getHead().getPosition().equals(foodPosition);
   }
 

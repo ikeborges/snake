@@ -2,25 +2,52 @@ import Direction from "./Direction";
 import Food from "./Food";
 import Snake from "./Snake";
 
+export interface GameStatus {
+  score: number;
+  startTime: number;
+  gameEnded: boolean;
+}
+
 class Game {
-  constructor(public score = 0, public food: Food, public snake: Snake) {}
+  private food: Food;
+  private snake: Snake;
+  private status: GameStatus;
+
+  constructor() {
+    this.food = new Food();
+    this.snake = new Snake();
+
+    this.status = {
+      score: 0,
+      startTime: Date.now(),
+      gameEnded: false,
+    };
+  }
 
   turnSnakeTo(direction: Direction) {
     this.snake.turnSnakeTo(direction);
   }
 
-  updateState(): boolean {
-    if (this.snake.collisionHappened()) return false;
+  runCycle(): GameStatus {
+    if (this.snake.collisionHappened()) this.status.gameEnded = true;
 
-    if (this.snake.shouldEatFood(this.food.position)) {
+    if (this.snake.shouldEatFood(this.food.getPosition())) {
       this.snake.eat();
-      this.score += 1;
       this.food = new Food();
+      this.status.score += 1;
     }
 
     this.snake.moveOneStep();
 
-    return true;
+    return this.status;
+  }
+
+  getSnakePositions() {
+    return this.snake.getPositions();
+  }
+
+  getFoodPosition() {
+    return this.food.getPosition();
   }
 }
 

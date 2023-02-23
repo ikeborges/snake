@@ -5,10 +5,10 @@ class Position {
 
   static generateRandomPosition() {
     const xCoordinate = Math.floor(
-      Math.random() * GameSettings.WIDTH_IN_BLOCKS
+      Math.random() * (GameSettings.FRAME_WIDTH / GameSettings.BLOCK_SIZE)
     );
     const yCoordinate = Math.floor(
-      Math.random() * GameSettings.HEIGHT_IN_BLOCKS
+      Math.random() * (GameSettings.FRAME_HEIGHT / GameSettings.BLOCK_SIZE)
     );
 
     return new Position(xCoordinate, yCoordinate);

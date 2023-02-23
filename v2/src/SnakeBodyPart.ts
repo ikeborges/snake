@@ -18,8 +18,12 @@ class SnakeBodyPart {
   }
 
   moveOneStep() {
-    const lastYPosition = GameSettings.HEIGHT_IN_BLOCKS - 1;
-    const lastXPosition = GameSettings.WIDTH_IN_BLOCKS - 1;
+    const HEIGHT_IN_BLOCKS =
+      GameSettings.FRAME_HEIGHT / GameSettings.BLOCK_SIZE;
+    const WIDTH_IN_BLOCKS = GameSettings.FRAME_WIDTH / GameSettings.BLOCK_SIZE;
+
+    const lastYPosition = HEIGHT_IN_BLOCKS - 1;
+    const lastXPosition = WIDTH_IN_BLOCKS - 1;
 
     // The Y axis in canvas is upside down, so to go up we need to subtract from Y
     switch (this.direction) {

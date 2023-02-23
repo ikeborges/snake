@@ -1,12 +1,11 @@
 import Directions from "./Direction";
-import Food from "./Food";
-import Game from "./Game";
+import Game, { GameStatus } from "./Game";
 import GameSettings from "./GameSettings";
-import Snake from "./Snake";
+import Position from "./Position";
 
 class CanvasGame {
-  public game: Game;
-  public previousTimestamp: number = 0;
+  private game: Game;
+  private previousTimestamp: number = 0;
 
   constructor(
     public window: Window,
@@ -14,13 +13,16 @@ class CanvasGame {
     public context: CanvasRenderingContext2D
   ) {
     this.context.fillStyle = "white";
-    this.game = new Game(0, new Food(), new Snake());
+    this.game = new Game();
     this.addKeyboardListeners();
-    this.tick(0);
+  }
+
+  start() {
+    this.gameLoop();
   }
 
   addKeyboardListeners() {
-    const keysToDirection = new Map([
+    const keysToDirections = new Map([
       ["ArrowUp", Directions.UP],
       ["ArrowDown", Directions.DOWN],
       ["ArrowLeft", Directions.LEFT],
@@ -28,8 +30,8 @@ class CanvasGame {
     ]);
 
     this.document.addEventListener("keydown", event => {
-      if (keysToDirection.has(event.key)) {
-        this.game.turnSnakeTo(keysToDirection.get(event.key)!);
+      if (keysToDirections.has(event.key)) {
+        this.game.turnSnakeTo(keysToDirections.get(event.key)!);
       }
     });
   }
@@ -45,52 +47,53 @@ class CanvasGame {
     );
   }
 
-  drawFood(food: Food) {
-    const { x, y } = food.position;
+  drawFood({ x, y }: Position) {
     this.drawBlock(x, y);
   }
 
-  drawSnake(snake: Snake) {
-    snake.getBody().forEach(bodyPart => {
-      const { x, y } = bodyPart.getPosition();
+  drawSnake(positions: Position[]) {
+    positions.forEach(({ x, y }) => {
       this.drawBlock(x, y);
     });
   }
 
   drawFrame() {
-    const { food, snake } = this.game;
+    const snakePositions = this.game.getSnakePositions();
+    const foodPosition = this.game.getFoodPosition();
 
-    this.drawFood(food);
-    this.drawSnake(snake);
+    this.drawFood(foodPosition);
+    this.drawSnake(snakePositions);
   }
 
-  tick = (timestamp: number) => {
+  updateView(gameStatus: GameStatus) {
+    // Update game status
+  }
+
+  gameOver(): void {
+    // Show game ended screen
+  }
+
+  gameLoop = (timestamp: number = 0) => {
     const elapsedTime = timestamp - this.previousTimestamp;
 
     if (!this.previousTimestamp || elapsedTime >= 200) {
       this.previousTimestamp = timestamp;
 
-      const updateResult = this.game.updateState();
+      const gameStatus = this.game.runCycle();
 
-      if (!updateResult) {
-        alert("Game over! Refresh the page to start again.");
-        return;
+      if (gameStatus.gameEnded) {
+        return this.gameOver();
       }
+
+      this.updateView(gameStatus);
 
       const { FRAME_WIDTH, FRAME_HEIGHT } = GameSettings;
       this.context.clearRect(0, 0, FRAME_WIDTH, FRAME_HEIGHT);
       this.drawFrame();
     }
 
-    this.window.requestAnimationFrame(this.tick);
+    this.window.requestAnimationFrame(this.gameLoop);
   };
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-  const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
-  const context = canvas.getContext("2d");
-
-  new CanvasGame(window, document, context!);
-});
 
 export default CanvasGame;

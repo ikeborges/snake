@@ -1,5 +1,5 @@
 import { assert, describe, it } from "vitest";
-import Direction, { oppositeDirection } from "./Direction";
+import Direction, { oppositeDirection } from "../src/Direction";
 
 describe("oppositeDirection(direction)", () => {
   it("should return the opposite direction of its parameter", () => {
