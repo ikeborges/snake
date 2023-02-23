@@ -1,0 +1,19 @@
+@import url("./common.css");
+
+.player-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-data label {
+  margin-top: 1rem;
+}
+
+.player-data input {
+  margin: 1rem 0;
+}
+
+.player-data button {
+  width: 100%;
+}

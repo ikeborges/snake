@@ -12,14 +12,14 @@ class Snake {
     this.populateBody(length);
   }
 
-  populateBody(length: number) {
+  private populateBody(length: number) {
     for (let i = 0; i < length; i++) {
       const bodyPart = new SnakeBodyPart(new Position(1, i + 1), Direction.UP);
       this.body.push(bodyPart);
     }
   }
 
-  appendBodyPart() {
+  private appendBodyPart() {
     const currentTail = this.getTail();
 
     let newPosition;

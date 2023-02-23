@@ -1,0 +1,13 @@
+@import url("./common.css");
+
+.game-stats {
+  min-width: 400px;
+  padding: 2rem;
+  font-size: var(--button-font-size);
+  line-height: 1.5;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+}
