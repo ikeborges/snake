@@ -6,7 +6,15 @@ import dbClient from "./dbClient.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.GAME_URL,
+  })
+);
+
+app.get("/", (req, res) => {
+  res.send({ hello: "world" });
+});
 
 app.post("/ranking", async (req, res) => {
   const { playerName, score, elapsedTime } = req.query;

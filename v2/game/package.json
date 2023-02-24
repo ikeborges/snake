@@ -6,7 +6,8 @@
   "scripts": {
     "test": "vitest",
     "dev": "vite",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build": "vite build"
   },
   "keywords": [],
   "author": "Kaique Borges (https://github.com/ikeborges/)",
