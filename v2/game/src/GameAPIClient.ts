@@ -1,6 +1,6 @@
 export namespace GameAPIClient {
   // Hardcoded URL: Don't do this! Use an environment variable instead.
-  const API_URL = "https://snake-api.vercel.app/";
+  const API_URL = "https://snake-api.vercel.app";
 
   export async function saveStatsInRanking(
     playerName: string,
