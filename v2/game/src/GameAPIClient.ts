@@ -1,13 +1,20 @@
 export namespace GameAPIClient {
   const API_URL = "http://localhost:3000";
 
-  export async function getRankingPosition(
+  export async function saveStatsInRanking(
     playerName: string,
     score: number,
     elapsedTime: number
   ) {
     return fetch(
-      `${API_URL}/ranking?playerName=${playerName}&score=${score}&elapsedTime=${elapsedTime}`
+      `${API_URL}/ranking?playerName=${playerName}&score=${score}&elapsedTime=${elapsedTime}`,
+      {
+        method: "POST",
+      }
     );
+  }
+
+  export async function getRanking() {
+    return fetch(`${API_URL}/ranking`);
   }
 }

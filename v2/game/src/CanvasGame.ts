@@ -1,3 +1,4 @@
+import { Formatting } from "../util/Formatting";
 import Directions from "./Direction";
 import Game, { GameStatus } from "./Game";
 import { GameAPIClient } from "./GameAPIClient";
@@ -87,18 +88,6 @@ class CanvasGame {
     this.drawSnake(snakePositions);
   }
 
-  private formatElapsedTime(time: Date): string {
-    const getPaddedValue = (number: number) => {
-      return number < 10 ? "0" + number.toString() : number;
-    };
-
-    const hours = getPaddedValue(time.getUTCHours());
-    const minutes = getPaddedValue(time.getUTCMinutes());
-    const seconds = getPaddedValue(time.getUTCSeconds());
-
-    return `${hours}:${minutes}:${seconds}`;
-  }
-
   updateView(gameStatus: GameStatus) {
     const gameScoreElement = document.getElementById(
       "score"
@@ -107,7 +96,7 @@ class CanvasGame {
 
     const gameTimeElement = document.getElementById("time") as HTMLSpanElement;
     const elapsedTime = new Date(Date.now() - gameStatus.startTime);
-    gameTimeElement.innerText = this.formatElapsedTime(elapsedTime);
+    gameTimeElement.innerText = Formatting.formatElapsedTime(elapsedTime);
   }
 
   async gameOver(gameStatus: GameStatus): Promise<void> {
@@ -125,20 +114,16 @@ class CanvasGame {
       "time-elapsed"
     ) as HTMLSpanElement;
     const elapsedTime = new Date(Date.now() - gameStatus.startTime);
-    elapsedTimeElement.innerText = this.formatElapsedTime(elapsedTime);
+    elapsedTimeElement.innerText = Formatting.formatElapsedTime(elapsedTime);
 
-    const rankingPositionElement = document.getElementById(
-      "ranking-position"
-    ) as HTMLSpanElement;
-    // rankingPositionElement.innerText =
-    const result = await GameAPIClient.getRankingPosition(
-      this.playerName,
-      gameStatus.score,
-      elapsedTime.getTime()
-    );
-
-    if (result.ok) {
-      console.log(await result.json());
+    try {
+      await GameAPIClient.saveStatsInRanking(
+        this.playerName,
+        gameStatus.score,
+        elapsedTime.getTime()
+      );
+    } catch (error) {
+      console.error(error);
     }
   }
 
