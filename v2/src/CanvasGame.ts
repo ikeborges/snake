@@ -136,7 +136,7 @@ class CanvasGame {
       GameAPIClient.getRankingPosition().toString();
   }
 
-  gameLoop = (timestamp: number = 0) => {
+  gameLoop(timestamp: number = 0) {
     const elapsedTime = timestamp - this.previousTimestamp;
 
     if (!this.previousTimestamp || elapsedTime >= 200) {
@@ -155,8 +155,8 @@ class CanvasGame {
       this.drawFrame();
     }
 
-    this.window.requestAnimationFrame(this.gameLoop);
-  };
+    this.window.requestAnimationFrame(this.gameLoop.bind(this));
+  }
 }
 
 export default CanvasGame;
