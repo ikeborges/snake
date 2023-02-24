@@ -23,23 +23,23 @@ class CanvasGame {
   retrievePlayername() {}
 
   start() {
-    const newGameScreen = this.document.getElementById(
-      "game-start"
-    ) as HTMLElement;
+    // const newGameScreen = this.document.getElementById(
+    //   "game-start"
+    // ) as HTMLElement;
 
-    const playerDataForm = this.document.getElementById(
-      "player-data"
-    ) as HTMLElement;
-    const playerNameInput = this.document.getElementById(
-      "player-name"
-    ) as HTMLInputElement;
+    // const playerDataForm = this.document.getElementById(
+    //   "player-data"
+    // ) as HTMLElement;
+    // const playerNameInput = this.document.getElementById(
+    //   "player-name"
+    // ) as HTMLInputElement;
 
-    playerDataForm.addEventListener("submit", ev => {
-      ev.preventDefault();
+    // playerDataForm.addEventListener("submit", ev => {
+    //   ev.preventDefault();
 
-      this.playerName = playerNameInput.value;
-      newGameScreen.className = "";
-    });
+    //   this.playerName = playerNameInput.value;
+    //   newGameScreen.className = "";
+    // });
 
     this.gameLoop();
   }
@@ -116,15 +116,15 @@ class CanvasGame {
     const elapsedTime = new Date(Date.now() - gameStatus.startTime);
     elapsedTimeElement.innerText = Formatting.formatElapsedTime(elapsedTime);
 
-    try {
-      await GameAPIClient.saveStatsInRanking(
-        this.playerName,
-        gameStatus.score,
-        elapsedTime.getTime()
-      );
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   await GameAPIClient.saveStatsInRanking(
+    //     this.playerName,
+    //     gameStatus.score,
+    //     elapsedTime.getTime()
+    //   );
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   gameLoop(timestamp: number = 0) {
