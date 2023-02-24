@@ -1,6 +1,6 @@
 import Directions from "./Direction";
 import Game, { GameStatus } from "./Game";
-import { GameAPIClient } from "./GameAPIClient";
+import { GameAPIClient } from "../src/GameAPIClient";
 import GameSettings from "./GameSettings";
 import Position from "./Position";
 
@@ -25,8 +25,6 @@ class CanvasGame {
     const newGameScreen = this.document.getElementById(
       "game-start"
     ) as HTMLElement;
-
-    newGameScreen.className = "active";
 
     const playerDataForm = this.document.getElementById(
       "player-data"

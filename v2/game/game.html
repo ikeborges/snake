@@ -4,21 +4,21 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./styles/game.css" />
+    <link rel="stylesheet" href="./css/game.css" />
     <title>Snake</title>
   </head>
   <body>
     <div class="wrapper">
       <div class="game-container">
         <header>
-          <div>Score: <span id="score">23</span></div>
-          <div>Time: <span id="time">03:12:03</span></div>
+          <div>Score: <span id="score">00</span></div>
+          <div>Time: <span id="time">00:00:00</span></div>
         </header>
         <canvas id="game-canvas" width="400" height="600"></canvas>
       </div>
     </div>
 
-    <div id="game-start">
+    <div id="game-start" class="active">
       <div class="wrapper">
         <h1>Welcome!</h1>
         <form id="player-data">
@@ -34,10 +34,10 @@
         <h1>Game Over!</h1>
         <div class="game-stats">
           <div class="stat">
-            <span>Final score:</span><span id="final-score">1020</span>
+            <span>Final score:</span><span id="final-score">0</span>
           </div>
           <div class="stat">
-            <span>Time elapsed:</span><span id="time-elapsed">03:21:02</span>
+            <span>Time elapsed:</span><span id="time-elapsed">00:00:00</span>
           </div>
           <div class="stat">
             <span>Ranking position:</span
@@ -48,6 +48,6 @@
       </div>
     </div>
 
-    <script type="module" src="../src/GameLoader.ts"></script>
+    <script type="module" src="./src/GameLoader.ts"></script>
   </body>
 </html>
