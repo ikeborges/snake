@@ -22,10 +22,16 @@ function addRow(position: string, name: string, score: string, time: string) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const response = await GameAPIClient.getRanking();
+  let response;
 
-  if (response.ok) {
-    const data = (await response.json()) as Array<{
+  try {
+    response = await GameAPIClient.getRanking();
+  } catch (error) {
+    console.error(error);
+  }
+
+  if (response?.ok) {
+    const data = (await response?.json()) as Array<{
       id: number;
       player_name: string;
       score: number;
@@ -40,7 +46,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         Formatting.formatElapsedTime(new Date(elapsed_time))
       );
     });
-  } else {
-    console.error("Could not retrieve ranking");
   }
 });
