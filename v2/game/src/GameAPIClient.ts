@@ -11,11 +11,14 @@ export namespace GameAPIClient {
       `${API_URL}/ranking?playerName=${playerName}&score=${score}&elapsedTime=${elapsedTime}`,
       {
         method: "POST",
+        mode: "no-cors"
       }
     );
   }
 
   export async function getRanking() {
-    return fetch(`${API_URL}/ranking`);
+    return fetch(`${API_URL}/ranking` {
+      mode: "no-cors"
+    });
   }
 }
