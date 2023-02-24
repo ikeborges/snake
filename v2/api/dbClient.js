@@ -1,6 +1,6 @@
-import mysql from "mysql2/promise";
+const mysql = require("mysql2/promise");
 
-export default {
+module.exports = {
   async addToRanking(playerName, score, elapsedTime) {
     try {
       const connection = await mysql.createConnection(process.env.DATABASE_URL);
