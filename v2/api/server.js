@@ -1,41 +1,33 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { MongoClient } from "mongodb";
+import dbClient from "./dbClient.js";
 
 dotenv.config();
 const app = express();
 
 app.use(cors());
 
-const dbClient = new MongoClient(process.env.MONGO_URI);
-
-app.get("/ranking", async (req, res) => {
+app.post("/ranking", async (req, res) => {
   const { playerName, score, elapsedTime } = req.query;
-
-  console.log(req.query);
 
   if (!playerName || !score || !elapsedTime) {
     throw new Error("Missing parameter");
   }
 
-  let result;
+  await dbClient.addToRanking(playerName, score, elapsedTime);
 
-  try {
-    const connection = await dbClient.connect();
-    result = await connection
-      .db("ranking")
-      .collection("ranking")
-      .insertOne({
-        playerName,
-        score: parseInt(score),
-        elapsedTime: parseInt(elapsedTime),
-      });
-  } catch (error) {
-    console.log(error);
-  }
+  res.sendStatus(201);
+});
 
-  res.send(result);
+app.get("/ranking", async (req, res) => {
+  const result = await dbClient.getRanking();
+
+  res.send(
+    result.map((x, index) => {
+      return { ...x, position: index + 1 };
+    })
+  );
 });
 
 const PORT = process.env.PORT || 5000;
