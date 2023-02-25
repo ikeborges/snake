@@ -39,9 +39,8 @@ class CanvasGame {
 
       this.playerName = playerNameInput.value;
       newGameScreen.className = "";
+      this.gameLoop();
     });
-
-    this.gameLoop();
   }
 
   addKeyboardListeners() {
