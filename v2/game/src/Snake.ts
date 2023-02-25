@@ -3,6 +3,7 @@ import Direction, { oppositeDirection } from "./Direction";
 import Position from "./Position";
 import SnakeBodyPart from "./SnakeBodyPart";
 import Queue from "../util/Queue";
+import GameSettings from "./GameSettings";
 
 class Snake {
   private body: SnakeBodyPart[] = [];
@@ -10,11 +11,17 @@ class Snake {
 
   constructor(length = 3) {
     this.populateBody(length);
+    console.log(this.body);
   }
 
   populateBody(length: number) {
     for (let i = 0; i < length; i++) {
-      const bodyPart = new SnakeBodyPart(new Position(1, i + 1), Direction.UP);
+      const initialY = GameSettings.FRAME_HEIGHT / GameSettings.BLOCK_SIZE - 3;
+
+      const bodyPart = new SnakeBodyPart(
+        new Position(2, initialY + i),
+        Direction.UP
+      );
       this.body.push(bodyPart);
     }
   }
@@ -109,7 +116,7 @@ class Snake {
     this.directionChanges.enqueue(newDirectionChange);
   }
 
-  collisionHappened() {
+  bodyCollisionHappened() {
     for (const [index, bodyPart] of Object.entries(this.body)) {
       if (
         parseInt(index) > 0 &&
@@ -119,6 +126,26 @@ class Snake {
     }
 
     return false;
+  }
+
+  wallCollisionHappened() {
+    const HEIGHT_IN_BLOCKS =
+      GameSettings.FRAME_HEIGHT / GameSettings.BLOCK_SIZE;
+    const WIDTH_IN_BLOCKS = GameSettings.FRAME_WIDTH / GameSettings.BLOCK_SIZE;
+
+    const lastYPosition = HEIGHT_IN_BLOCKS - 1;
+    const lastXPosition = WIDTH_IN_BLOCKS - 1;
+
+    const { x: headX, y: headY } = this.getHead().getPosition();
+
+    const xCollision = headX >= lastXPosition || headX <= 0;
+    const yCollision = headY >= lastYPosition || headY <= 0;
+
+    return xCollision || yCollision;
+  }
+
+  collisionHappened() {
+    return this.bodyCollisionHappened() || this.wallCollisionHappened();
   }
 
   moveOneStep() {
