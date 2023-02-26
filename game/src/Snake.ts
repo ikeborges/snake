@@ -11,7 +11,6 @@ class Snake {
 
   constructor(length = 3) {
     this.populateBody(length);
-    console.log(this.body);
   }
 
   populateBody(length: number) {
@@ -133,13 +132,13 @@ class Snake {
       GameSettings.FRAME_HEIGHT / GameSettings.BLOCK_SIZE;
     const WIDTH_IN_BLOCKS = GameSettings.FRAME_WIDTH / GameSettings.BLOCK_SIZE;
 
-    const lastYPosition = HEIGHT_IN_BLOCKS - 1;
-    const lastXPosition = WIDTH_IN_BLOCKS - 1;
+    const lastYPosition = HEIGHT_IN_BLOCKS;
+    const lastXPosition = WIDTH_IN_BLOCKS;
 
     const { x: headX, y: headY } = this.getHead().getPosition();
 
-    const xCollision = headX >= lastXPosition || headX <= 0;
-    const yCollision = headY >= lastYPosition || headY <= 0;
+    const xCollision = headX >= lastXPosition || headX < 0;
+    const yCollision = headY >= lastYPosition || headY < 0;
 
     return xCollision || yCollision;
   }
