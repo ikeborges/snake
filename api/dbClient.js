@@ -20,7 +20,7 @@ module.exports = {
     try {
       const connection = await mysql.createConnection(process.env.DATABASE_URL);
       [rows] = await connection.execute(
-        `SELECT * FROM ranking ORDER BY score, elapsed_time`
+        `SELECT * FROM ranking ORDER BY score, elapsed_time ASC`
       );
       connection.end();
     } catch (error) {
