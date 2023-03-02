@@ -1,5 +1,10 @@
 @import url("./common.css");
 
+body {
+  min-height: 100%;
+  padding: 10rem;
+}
+
 .back {
   position: absolute;
   top: 2rem;
